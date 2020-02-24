@@ -57,6 +57,7 @@ const GraphVizChart = React.lazy(() =>
 const PlotlyChart = React.lazy(() =>
   import("components/elements/PlotlyChart/")
 )
+const VegaChart = React.lazy(() => import("components/elements/VegaChart/"))
 const VegaLiteChart = React.lazy(() =>
   import("components/elements/VegaLiteChart/")
 )
@@ -290,6 +291,9 @@ class Block extends PureComponent<Props> {
       progress: (el: SimpleElement) => <Progress element={el} width={width} />,
       table: (el: SimpleElement) => <Table element={el} width={width} />,
       text: (el: SimpleElement) => <Text element={el} width={width} />,
+      vegaChart: (el: SimpleElement) => (
+        <VegaChart element={el} width={width} />
+      ),
       vegaLiteChart: (el: SimpleElement) => (
         <VegaLiteChart element={el} width={width} />
       ),

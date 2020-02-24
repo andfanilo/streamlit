@@ -1068,6 +1068,120 @@ class DeltaGenerator(object):
         )
 
     @_with_element
+    def vega_chart(
+        self,
+        element,
+        data=None,
+        spec=None,
+        width=0,
+        use_container_width=False,
+        **kwargs
+    ):
+        """Display a chart using the Vega library.
+
+        Parameters
+        ----------
+        data : pandas.DataFrame, pandas.Styler, numpy.ndarray, Iterable, dict,
+            or None
+            Either the data to be plotted or a Vega spec containing the
+            data (which more closely follows the Vega API).
+
+        spec : dict or None
+            The Vega spec for the chart. If the spec was already passed in
+            the previous argument, this must be set to None. See
+            https://vega.github.io/vega/docs/ for more info.
+
+        width : number
+            Deprecated. If != 0 (default), will show an alert.
+            From now on you should set the width directly in the Vega
+            spec. Please refer to the Vega documentation for details.
+
+        use_container_width : bool
+            If True, set the chart width to the column width. This takes
+            precedence over Vega's native `width` value.
+
+        **kwargs : any
+            Same as spec, but as keywords.
+
+        Example
+        -------
+
+        >>> import pandas as pd
+        >>> import numpy as np
+        >>>
+        >>> df = pd.DataFrame({
+        ...     'category': ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I'],
+        ...     'amount': [28, 55, 43, 91, 81, 53, 19, 87, 52]
+        ... })
+        >>>
+        >>> st.vega_chart(df, {
+        ...     'height': 500,
+        ...     'width': 500,
+        ...     'scales': [
+        ...         {
+        ...           'name': 'xscale',
+        ...           'type': 'band',
+        ...           'domain': {'data': 'table', 'field': 'category'},
+        ...           'range': 'width',
+        ...           'padding': 0.05,
+        ...           'round': True
+        ...         },
+        ...         {
+        ...           'name': 'yscale',
+        ...           'domain': {'data': 'table', 'field': 'amount'},
+        ...           'nice': True,
+        ...           'range': 'height'
+        ...         }
+        ...       ],
+        ...
+        ...       'axes': [
+        ...         { 'orient': 'bottom', 'scale': 'xscale' },
+        ...         { 'orient': 'left', 'scale': 'yscale' }
+        ...       ],
+        ...
+        ...       'marks': [
+        ...         {
+        ...           'type': 'rect',
+        ...           'from': {'data':'table'},
+        ...           'encode': {
+        ...             'enter': {
+        ...               'x': {'scale': 'xscale', 'field': 'category'},
+        ...               'width': {'scale': 'xscale', 'band': 1},
+        ...               'y': {'scale': 'yscale', 'field': 'amount'},
+        ...               'y2': {'scale': 'yscale', 'value': 0}
+        ...             }
+        ...           }
+        ...         }
+        ...       ]
+        ... })
+
+        .. output::
+           https://share.streamlit.io/0.25.0-2JkNY/index.html?id=8jmmXR8iKoZGV4kXaKGYV5
+           height: 200px
+
+        Examples of Vega usage without Streamlit can be found at
+        https://vega.github.io/vega/examples/. Most of those can be easily
+        translated to the syntax shown above.
+
+        """
+        import streamlit.elements.vega as vega
+
+        if width != 0:
+            import streamlit as st
+
+            st.warning(
+                "The `width` argument in `st.vega_chart` is deprecated and will be removed on 2020-03-04. To set the width, you should instead use Vega's native `width` argument as described at https://vega.github.io/vega/docs/config/"
+            )
+
+        vega.marshall(
+            element.vega_chart,
+            data,
+            spec,
+            use_container_width=use_container_width,
+            **kwargs,
+        )
+
+    @_with_element
     def altair_chart(self, element, altair_chart, width=0, use_container_width=False):
         """Display a chart using the Altair library.
 

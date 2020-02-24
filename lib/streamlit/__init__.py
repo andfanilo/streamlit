@@ -184,6 +184,7 @@ text_area = _main.text_area  # noqa: E221
 text_input = _main.text_input  # noqa: E221
 time_input = _main.time_input  # noqa: E221
 title = _main.title  # noqa: E221
+vega_chart = _main.vega_chart  # noqa: E221
 vega_lite_chart = _main.vega_lite_chart  # noqa: E221
 video = _main.video  # noqa: E221
 warning = _main.warning  # noqa: E221

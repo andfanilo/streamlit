@@ -46,6 +46,7 @@ import "streamlit/proto/Text.proto";
 import "streamlit/proto/TextArea.proto";
 import "streamlit/proto/TextInput.proto";
 import "streamlit/proto/TimeInput.proto";
+import "streamlit/proto/VegaChart.proto";
 import "streamlit/proto/VegaLiteChart.proto";
 import "streamlit/proto/Video.proto";
 
@@ -85,10 +86,11 @@ message Element {
     TextArea text_area = 22;
     TextInput text_input = 24;
     TimeInput time_input = 26;
+    VegaChart vega_chart = 35;
     VegaLiteChart vega_lite_chart = 10;
     Video video = 14;
-    
-    // Next ID: 35
+
+    // Next ID: 36
   }
 
   reserved 9;
