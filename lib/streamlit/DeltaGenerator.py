@@ -1109,51 +1109,117 @@ class DeltaGenerator(object):
         >>> import pandas as pd
         >>> import numpy as np
         >>>
-        >>> df = pd.DataFrame({
-        ...     'category': ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I'],
-        ...     'amount': [28, 55, 43, 91, 81, 53, 19, 87, 52]
-        ... })
+        >>> df = pd.DataFrame(
+        ...     np.random.randn(200, 3),
+        ...     columns=['a', 'b', 'c'])
         >>>
-        >>> st.vega_chart(df, {
-        ...     'height': 500,
-        ...     'width': 500,
-        ...     'scales': [
-        ...         {
-        ...           'name': 'xscale',
-        ...           'type': 'band',
-        ...           'domain': {'data': 'table', 'field': 'category'},
-        ...           'range': 'width',
-        ...           'padding': 0.05,
-        ...           'round': True
-        ...         },
-        ...         {
-        ...           'name': 'yscale',
-        ...           'domain': {'data': 'table', 'field': 'amount'},
-        ...           'nice': True,
-        ...           'range': 'height'
-        ...         }
-        ...       ],
-        ...
-        ...       'axes': [
-        ...         { 'orient': 'bottom', 'scale': 'xscale' },
-        ...         { 'orient': 'left', 'scale': 'yscale' }
-        ...       ],
-        ...
-        ...       'marks': [
-        ...         {
-        ...           'type': 'rect',
-        ...           'from': {'data':'table'},
-        ...           'encode': {
-        ...             'enter': {
-        ...               'x': {'scale': 'xscale', 'field': 'category'},
-        ...               'width': {'scale': 'xscale', 'band': 1},
-        ...               'y': {'scale': 'yscale', 'field': 'amount'},
-        ...               'y2': {'scale': 'yscale', 'value': 0}
-        ...             }
-        ...           }
-        ...         }
-        ...       ]
-        ... })
+        >>> st.vega_chart(df_rand, {
+        ...  'height': 200,
+        ...  'scales': [
+        ...    {
+        ...      'name': 'x',
+        ...      'type': 'linear',
+        ...      'nice': True,
+        ...      'zero': True,
+        ...      'domain': {'data': 'source', 'field': 'a'},
+        ...      'range': 'width'
+        ...    },
+        ...    {
+        ...      'name': 'y',
+        ...      'type': 'linear',
+        ...      'nice': True,
+        ...      'zero': True,
+        ...      'domain': {'data': 'source', 'field': 'b'},
+        ...      'range': 'height'
+        ...    },
+        ...    {
+        ...      'name': 'color',
+        ...      'type': 'linear',
+        ...      'range': 'ramp',
+        ...      'interpolate': 'hcl',
+        ...      'zero': False,
+        ...      'domain': {'data': 'source', 'field': 'c'},
+        ...    },
+        ...    {
+        ...      'name': 'size',
+        ...      'type': 'linear',
+        ...      'zero': True,
+        ...      'range': [0, 361],
+        ...      'domain': {'data': 'source', 'field': 'c'},
+        ...    }
+        ...  ],
+        ...  'axes': [
+        ...    {
+        ...      'scale': 'x',
+        ...      'grid': True,
+        ...      'tickCount': {
+        ...        'signal': 'ceil(width/40)'
+        ...      },
+        ...      'domain': False,
+        ...      'orient': 'bottom',
+        ...      'title': 'a'
+        ...    },
+        ...    {
+        ...      'scale': 'y',
+        ...      'grid': True,
+        ...      'tickCount': {
+        ...        'signal': 'ceil(height/40)'
+        ...        },
+        ...      'domain': False,
+        ...      'orient': 'left',
+        ...      'title': 'b'
+        ...    },
+        ...    {
+        ...      'scale': 'x',
+        ...      'orient': 'bottom',
+        ...      'grid': False,
+        ...      'title': 'a',
+        ...      'labelFlush': True,
+        ...      'labelOverlap': True,
+        ...      'tickCount': {
+        ...        'signal': 'ceil(width/40)'
+        ...      },
+        ...      'zindex': 0
+        ...    },
+        ...    {
+        ...      'scale': 'y',
+        ...      'orient': 'left',
+        ...      'grid': False,
+        ...      'title': 'b',
+        ...      'labelOverlap': True,
+        ...      'tickCount': {
+        ...        'signal': 'ceil(height/40)'
+        ...      },
+        ...      'zindex': 0
+        ...    }
+        ...  ],
+        ...  'legends': [
+        ...    {
+        ...      'size': 'size',
+        ...      'title': 'c',
+        ...      'format': 's',
+        ...      'fill': 'color',
+        ...      'symbolType': 'circle'
+        ...    }
+        ...  ],
+        ...  'marks': [
+        ...    {
+        ...      'name': 'marks',
+        ...      'type': 'symbol',
+        ...      'from': {'data': 'source'},
+        ...      'encode': {
+        ...        'update': {
+        ...          'x': {'scale': 'x', 'field': 'a'},
+        ...          'y': {'scale': 'y', 'field': 'b'},
+        ...          'size': {'scale': 'size', 'field': 'c'},
+        ...          'shape': {'value': 'circle'},
+        ...          'opacity': {'value': 0.7},
+        ...          'fill': {'scale': 'color', 'field': 'c'}
+        ...        }
+        ...      }
+        ...    }
+        ...  ]
+        ...}, use_container_width=True)
 
         .. output::
            https://share.streamlit.io/0.25.0-2JkNY/index.html?id=8jmmXR8iKoZGV4kXaKGYV5
