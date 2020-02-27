@@ -261,12 +261,8 @@ class VegaChart extends React.PureComponent<PropsWithHeight, State> {
 
     const el = this.props.element
     const spec = this.generateSpec()
-    logMessage("Here is the spec")
-    logMessage(spec)
 
     const datasets = getDataArrays(el)
-    logMessage("Here are the datasets")
-    logMessage(datasets)
 
     const datasetNames = datasets ? Object.keys(datasets) : []
 
